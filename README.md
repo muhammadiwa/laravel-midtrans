@@ -22,7 +22,7 @@ Pastikan Anda memiliki hal-hal berikut terinstal di lingkungan development Anda:
 
 1. Clone repository ini:
    ```bash
-   git clone https://github.com/username/repo.git
+   git clone https://github.com/muhammadiwa/laravel-midtrans.git
    cd repo
    ```
 
