@@ -78,6 +78,7 @@ class PaymentController extends Controller
     {
         // Validasi input dari request
         $validated = $request->validate([
+            'order_id' => 'required|string',
             'gross_amount' => 'required|numeric',
             'customer_name' => 'required|string',
             'customer_email' => 'required|email',
@@ -87,7 +88,7 @@ class PaymentController extends Controller
         // Set parameter transaksi
         $params = [
             'transaction_details' => [
-                'order_id' => rand(),
+                'order_id' => $validated['order_id'],
                 'gross_amount' => $validated['gross_amount'],
             ],
             'customer_details' => [
