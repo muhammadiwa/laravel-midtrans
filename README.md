@@ -1,7 +1,3 @@
-Berikut adalah contoh dokumentasi **README** yang dapat Anda gunakan untuk proyek Midtrans API dengan Swagger yang akan dipush ke GitHub:
-
----
-
 # Midtrans Payment API
 
 API untuk pemrosesan pembayaran menggunakan Midtrans, lengkap dengan dokumentasi yang dibuat menggunakan Swagger.
