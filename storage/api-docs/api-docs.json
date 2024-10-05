@@ -1,0 +1,237 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Payment API Documentation",
+        "description": "API Documentation for Payment Processing using Midtrans",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local Development Server"
+        }
+    ],
+    "paths": {
+        "/api/create-transaction": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Create a new payment transaction",
+                "description": "Creates a new payment transaction and returns a Snap token.",
+                "operationId": "createTransaction",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_id",
+                                    "gross_amount",
+                                    "customer_name",
+                                    "customer_email",
+                                    "customer_phone"
+                                ],
+                                "properties": {
+                                    "order_id": {
+                                        "type": "string",
+                                        "example": "ORDER-123456789"
+                                    },
+                                    "gross_amount": {
+                                        "type": "number",
+                                        "example": 100000
+                                    },
+                                    "customer_name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "customer_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "customer_phone": {
+                                        "type": "string",
+                                        "example": "+6281234567890"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transaction created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction created successfully"
+                                        },
+                                        "snap_token": {
+                                            "type": "string",
+                                            "example": "eJx9j..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transaction-status/{orderId}": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Get the status of a payment transaction",
+                "description": "Retrieves the status of a payment transaction by order ID.",
+                "operationId": "transactionStatus",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "Order ID of the transaction",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ORDER-123456789"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction status retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction status retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "status_code": {
+                                                    "type": "string",
+                                                    "example": "200"
+                                                },
+                                                "transaction_status": {
+                                                    "type": "string",
+                                                    "example": "settlement"
+                                                },
+                                                "payment_type": {
+                                                    "type": "string",
+                                                    "example": "bank_transfer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Transaction not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Payments",
+            "description": "API Endpoints for Payment Processing"
+        }
+    ]
+}
