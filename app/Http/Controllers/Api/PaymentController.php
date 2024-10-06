@@ -95,17 +95,24 @@ class PaymentController extends Controller
                 'first_name' => $validated['customer_name'],
                 'email' => $validated['customer_email'],
                 'phone' => $validated['customer_phone'],
-            ]
+            ],
+            // Tambahkan daftar metode pembayaran yang diizinkan
+            // 'enabled_payments' => ['credit_card', 'bank-transfer', 'gopay', 'shopeepay'], // Tambahkan metode pembayaran yang ingin ditampilkan
         ];
 
         try {
             // Buat Snap Transaction Token
             $snapToken = Snap::getSnapToken($params);
 
+            // Buat URL Snap untuk pembayaran
+            $snapUrl = Snap::createTransaction($params)->redirect_url;
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Transaction created successfully',
                 'snap_token' => $snapToken,
+                'snap_url' => $snapUrl, // Kirim URL Snap untuk digunakan pada frontend
+                // 'enabled_payments' => $params['enabled_payments'], // Tampilkan metode pembayaran
             ]);
         } catch (\Exception $e) {
             return response()->json([
